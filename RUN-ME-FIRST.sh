@@ -201,7 +201,6 @@ sendKeysTodc()
 writeToSettings()
 {
     echo "dcUTILS=${dcUTILS}" > ~/.dcConfig/settings
-    echo "PYTHONPATH=$PYTHONPATH:${dcUTILS}/scripts" > ~/.dcConfig/settings
     echo "CUSTOMER_NAME=${CUSTOMER_NAME}" >> ~/.dcConfig/settings
     echo "PROFILE=${PROFILE}" >> ~/.dcConfig/settings
     echo "USER_NAME=${USER_NAME}" >> ~/.dcConfig/settings
@@ -210,8 +209,21 @@ writeToSettings()
     echo "dcCOMMON_SHARED_DIR=${dcCOMMON_SHARED_DIR}" >> ~/.dcConfig/settings
     echo  >> ~/.dcConfig/settings
     echo "export dcUTILS=${dcUTILS}" >> ~/.dcConfig/settings
-    echo "export PYTHONPATH=$PYTHONPATH:${dcUTILS}/scripts" >> ~/.dcConfig/settings
-    echo "export PATH=${dcUTILS}:$PATH" >> ~/.dcConfig/settings
+
+    if [[ -z ${PYTHONPATH} ]]; then
+        echo "export PYTHONPATH=${dcUTILS}/scripts" >> ~/.dcConfig/settings
+    elif [[ "${PYTHONPATH}" != *"${dcUTILS}"* ]]; then
+        echo "export PYTHONPATH=${PYTHONPATH}:${dcUTILS}/scripts" >> ~/.dcConfig/settings
+    else
+        echo "export PYTHONPATH=${dcUTILS}/scripts" >> ~/.dcConfig/settings
+    fi
+
+    if [[ -z ${PATH} ]]; then
+        echo "export PATH=${dcUTILS}/scripts" >> ~/.dcConfig/settings
+    elif [[ "${PATH}" != *"${dcUTILS}"* ]]; then
+        echo "export PATH=${dcUTILS}:${PATH}" >> ~/.dcConfig/settings
+    fi
+
     echo "unset CUSTOMER_NAME" >> ~/.dcConfig/settings
     echo "unset PROFILE" >> ~/.dcConfig/settings
     echo "unset USER_NAME" >> ~/.dcConfig/settings
