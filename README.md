@@ -10,7 +10,8 @@ used when RUN-ME-FIRST.sh is executed.
 
 - download the zipped tarball of the devops.center repository: dcBootstrap
 - untar the zipped dcBootstrap tarball into a directory into a directory on the shared drive
-- change directory to dcBootstrap and create a directory named: .aws
+- change to the directory that was just created 
+- create a directory named: .aws
 
 ```
 mkdir .aws
