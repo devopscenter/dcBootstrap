@@ -2,12 +2,19 @@ In order to begin the bootstrap process for new developers of a customer, there 
 need to be some manual work.  One of the tasks is to create a set of keys that can be
 used when RUN-ME-FIRST.sh is executed.  
 
-- first checkout dcBootstrap into a directory in the shared drive
+- check the guidelines for you cloud provider on how to make authentication keys
+
+- for AWS go to the AWS console and if not already created create an account for the
+  customer.  Then create the main user and make note of the access key and the secret
+  key. They will be placed into the .aws/credentials file in the steps below 
+
+- checkout dcBootstrap into a directory in the shared drive
 - change directory to dcBootstrap and create a directory named: .aws
 
 ```
 mkdir .aws
 ```
+
 - change directory to .aws
 - create the config file like this:
 
