@@ -210,19 +210,21 @@ writeToSettings()
     echo  >> ~/.dcConfig/settings
     echo "export dcUTILS=${dcUTILS}" >> ~/.dcConfig/settings
 
-    if [[ -z ${PYTHONPATH} ]]; then
-        echo "export PYTHONPATH=${dcUTILS}/scripts" >> ~/.dcConfig/settings
-    elif [[ "${PYTHONPATH}" != *"${dcUTILS}"* ]]; then
-        echo "export PYTHONPATH=${PYTHONPATH}:${dcUTILS}/scripts" >> ~/.dcConfig/settings
-    else
-        echo "export PYTHONPATH=${dcUTILS}/scripts" >> ~/.dcConfig/settings
-    fi
+    cat << 'EOF' >> ~/.dcConfig/settings 
+if [[ -z ${PYTHONPATH} ]]; then
+    export PYTHONPATH=${dcUTILS}/scripts
+elif [[ "${PYTHONPATH}" != *"${dcUTILS}"* ]]; then
+    export PYTHONPATH=${PYTHONPATH}:${dcUTILS}/scripts
+else
+    export PYTHONPATH=${dcUTILS}/scripts
+fi
 
-    if [[ -z ${PATH} ]]; then
-        echo "export PATH=${dcUTILS}/scripts" >> ~/.dcConfig/settings
-    elif [[ "${PATH}" != *"${dcUTILS}"* ]]; then
-        echo "export PATH=${dcUTILS}:${PATH}" >> ~/.dcConfig/settings
-    fi
+if [[ -z ${PATH} ]]; then
+    export PATH=${dcUTILS}/scripts
+elif [[ "${PATH}" != *"${dcUTILS}"* ]]; then
+    export PATH=${dcUTILS}:${PATH}
+fi
+EOF
 
     echo "unset CUSTOMER_NAME" >> ~/.dcConfig/settings
     echo "unset PROFILE" >> ~/.dcConfig/settings
