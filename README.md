@@ -8,6 +8,8 @@ used when RUN-ME-FIRST.sh is executed.
   customer.  Then create the main user and make note of the access key and the secret
   key. They will be placed into the .aws/credentials file in the steps below 
 
+- determine the directory on the shared drive to put the dcBootstrap files
+    - create the destination-dir in the shared drive location
 - download the zipped tarball of the devops.center repository: dcBootstrap
     - execute
 
@@ -16,7 +18,7 @@ cd destination-dir
 curl -L https://github.com/devopscenter/dcBootstrap/archive/master  | tar xf -
 mv devopscenter\* dcBootstrap
 ```
-- untar the zipped dcBootstrap tarball into a directory into a directory on the shared drive
+
 - change to the directory that was just created 
 - create a directory named: .aws
 
