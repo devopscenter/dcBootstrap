@@ -9,6 +9,13 @@ used when RUN-ME-FIRST.sh is executed.
   key. They will be placed into the .aws/credentials file in the steps below 
 
 - download the zipped tarball of the devops.center repository: dcBootstrap
+    - execute
+
+'''
+cd destination-dir
+curl -L https://github.com/devopscenter/dcBootstrap/archive/master  | tar xf -
+mv devopscenter\* dcBootstrap
+'''
 - untar the zipped dcBootstrap tarball into a directory into a directory on the shared drive
 - change to the directory that was just created 
 - create a directory named: .aws
