@@ -9,7 +9,7 @@ used when RUN-ME-FIRST.sh is executed.
   key. They will be placed into the .aws/credentials file in the steps below 
 
 - determine the directory on the shared drive to put the dcBootstrap files
-    - create the destination-dir in the shared drive location
+    - assuming the destination-dir is not there, create it in the shared drive location
 - download the zipped tarball of the devops.center repository: dcBootstrap
     - execute
 
