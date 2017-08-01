@@ -326,7 +326,13 @@ clonedcUtils()
     echo "anywhere.  Once this is cloned the path to the dcUtils directory will"
     echo "need to go into your PATH variable and then exported."
     echo 
-    read -i "~/devops/devopscenter" -p "Enter your directory location and press [ENTER]: "  -e aBaseDir
+    # check to see if we have a default value
+    if [[ "${dcUTILS_BASE_DIR}" ]]; then
+        read -i "${dcUTILS_BASE_DIR}" -p "Enter your directory location and press [ENTER]: "  -e aBaseDir
+    else
+        read -i "~/devops/devopscenter" -p "Enter your directory location and press [ENTER]: "  -e aBaseDir
+    fi
+
     if [[ ${aBaseDir} == "~"* || ${aBaseDir} == "\$HOME"* ]]; then
         homePath=$(echo $HOME)
         partialBaseDir=${aBaseDir#*/}
@@ -371,6 +377,12 @@ clonedcUtils()
 
 # get BASE_DIR from getMyPath
 getBasePath
+
+# get the init.conf to set up some common defaults
+if [[ -f ${BASE_DIR}/init.conf ]]; then
+    source ${BASE_DIR}/init.conf
+fi
+
 
 #-------------------------------------------------------------------------------
 # set up $HOME/.dcConfig 
@@ -461,7 +473,14 @@ echo "First, we ask for your customer name.  This will be used"
 echo "as the value for the cloud based profile and should be the same for everyone "
 echo "within the company.  One word and not spaces all lowercase letters."
 echo 
-read -p "Enter your customer name and press [ENTER]: "  customerName
+
+# check to see if we have a default value
+if [[ ${CUSTOMER_NAME} ]]; then
+    read -i ${CUSTOMER_NAME} -p "Enter your customer name and press [ENTER]: " -e  customerName
+else
+    read -p "Enter your customer name and press [ENTER]: "  customerName
+fi
+
 if [[ -z ${customerName} ]]; then
     echo "Entering the customer name is required, exiting..."
     exit 1
@@ -478,7 +497,14 @@ echo
 echo "Enter your username, one word and no spaces all lowercase letters."
 echo "This value will be used to create an cloud user specifically for you."
 echo 
-read -i $USER -p "Enter your user name and press [ENTER]: " -e userName
+
+# check to see if we have a default value
+if [[ ${USER_NAME} ]]; then
+    read -i ${USER_NAME} -p "Enter your user name and press [ENTER]: " -e userName
+else
+    read -i $USER -p "Enter your user name and press [ENTER]: " -e userName
+fi
+
 if [[ -z ${userName} ]]; then
     echo "Entering the user name is required, exiting..."
     exit 1
@@ -495,7 +521,12 @@ echo "machine.  This will be used to look for shared keys and other administrati
 echo "functions that are shared between all developers working with the devops.center"
 echo "tools."
 echo
-read -i "~/Google Drive"  -p "Enter the shared drive path and press [ENTER]: " -e sharedDrivePath
+
+if [[ "${dcCOMMON_SHARED_DIR}" ]]; then
+    read -i "${dcCOMMON_SHARED_DIR}" -p "Enter the shared drive path and press [ENTER]: " -e sharedDrivePath
+else
+    read -i "~/Google Drive" -p "Enter the shared drive path and press [ENTER]: " -e sharedDrivePath
+fi
 
 if [[ ${sharedDrivePath} == "~"* || ${sharedDrivePath} == "\$HOME"* ]]; then
     homePath=$(echo $HOME)
@@ -504,7 +535,6 @@ if [[ ${sharedDrivePath} == "~"* || ${sharedDrivePath} == "\$HOME"* ]]; then
 else
     dcCOMMON_SHARED_DIR=${sharedDrivePath}
 fi
-
 
 #-------------------------------------------------------------------------------
 # if using AWS get the region for the instances
@@ -515,13 +545,19 @@ echo "instances will be in when they are created. This value can be obtained fro
 echo "main authentication user if it is not known. "
 echo "(The value is typically us-west-2 or us-east-1.)"
 echo 
-read -i us-west-2  -p "Enter the region and press [ENTER]: " -e region
+
+# check to see if we have a default value
+if [[ ${REGION} ]]; then
+    read -i ${REGION} -p "Enter the region and press [ENTER]: " -e region
+else
+    read -i us-west-2  -p "Enter the region and press [ENTER]: " -e region
+fi
+
 if [[ -z ${region} ]]; then
     REGION=us-west-2
 else
     REGION=${region,,}
 fi
-
 
 #-------------------------------------------------------------------------------
 # get the local development directory
@@ -533,18 +569,25 @@ echo "files and the application website. This can be anywhere within your local 
 echo "named anything you would like.  A suggestion might be to put it in your "
 echo "home directory and call it devops: ~/devops/apps"
 echo  
-read -i "~/devops/apps" -p "Enter the directory and press [ENTER]: "  -e localDevBaseDir
+
+# check to see if we have a default value
+if [[ "${DEV_BASE_DIR}" ]]; then
+    read -i "${DEV_BASE_DIR}" -p "Enter the directory and press [ENTER]: "  -e localDevBaseDir
+else
+    read -i "~/devops/apps" -p "Enter the directory and press [ENTER]: "  -e localDevBaseDir
+fi
+
 if [[ -z ${localDevBaseDir} ]]; then
     echo "Entering the local development directory is required, exiting..."
     exit 1
 fi
+
 if [[ ${localDevBaseDir} == "~"* || ${localDevBaseDir} == "\$HOME"* ]]; then
     homePath=$(echo $HOME)
     partialBaseDir=${localDevBaseDir#*/}
     localDevBaseDir="${homePath}/${partialBaseDir}"
-else
-    localDevBaseDir=${aBaseDir}
 fi
+
 if [[ ! -d ${localDevBaseDir} ]]; then
     echo "That directory ${localDevBaseDir} doesn't exists"
     read -i "y" -p "Do you want it created [y or n]: " -e createdReply
@@ -556,6 +599,7 @@ if [[ ! -d ${localDevBaseDir} ]]; then
     fi
 fi
 DEV_BASE_DIR=${localDevBaseDir}
+
 
 #-------------------------------------------------------------------------------
 # clone dcUtils where the user wants it
