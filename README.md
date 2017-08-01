@@ -58,6 +58,13 @@ aws_secret_access_key = PUT_YOUR_SECRET_KEY_HERE
 tar -cf bootstrap-aws.tar .aws
 ```
 
+- before RUN-ME-FIRST.sh is executed it is possible to provide some common (to the customer) defaults to
+  the questions that are asked in the RUN-ME-FIRST.sh script.  There is a file, init.conf, in the dcBootstrap
+  directory that you can edit to give default values that the user can then just hit return to accept.  This
+  would make for less typing that each user would have to make and could provide a bit of standardization 
+  for development.  However, these values can still be overwritten when RUN-ME-FIRST.sh is run, as these are 
+  more like suggestions.
+
 - once there then every developer can run RUN-ME-FIRST.sh from that directory and they will have been 
   bootstrapped with the devops.center framework
 
