@@ -70,6 +70,30 @@ determineProfile()
 }
 
 #---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  copyLoggingScript
+#   DESCRIPTION:  copy dcUtils/script/dcEnv.sh to destination directory
+#    PARAMETERS:  
+#       RETURNS:  
+#-------------------------------------------------------------------------------
+copyLoggingScript()
+{
+    if [[ -d /usr/local/bin ]]; then
+        cp ${dcUTILS}/scripts/dcEnv.sh /usr/local/bin/dcEnv.sh
+    else
+        echo 
+        echo "We need to put a logging script in /usr/local/bin and it doesn't"
+        echo "appear to exist"
+        read -i "y" -p "Do you want it created [y or n]: " -e createdReply
+        if [[ ${createdReply} == "y" ]]; then
+            mkdir -p /usr/local/bin
+        else
+            echo "not created."
+            exit 1
+        fi
+    fi
+}
+
+#---  FUNCTION  ----------------------------------------------------------------
 #          NAME:  setupIAMUser
 #   DESCRIPTION:  creates the IAM user under a specific group which defines the rolse
 #                 for this user.  
@@ -648,6 +672,13 @@ sendKeysTodc
 # we have collected all the information we need now write it out to .dcConfig/settings
 #-------------------------------------------------------------------------------
 writeToSettings
+
+#-------------------------------------------------------------------------------
+# we need to copy over the dcEnv.sh over to /usr/local/bin so the scripts that
+# don't use process_dc_env.py can still get the logging functions that display a 
+# better output. 
+#-------------------------------------------------------------------------------
+copyLoggingScript
 
 #-------------------------------------------------------------------------------
 # Now is the time to remove the bootstrap section from the .aws/{config|credentials}
