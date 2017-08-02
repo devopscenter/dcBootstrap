@@ -324,7 +324,10 @@ clonedcUtils()
     echo "We need to grab a clone of the devops.center utilitities: dcUtils"
     echo "And for that, we need a directory location on your machine.  It can go"
     echo "anywhere.  Once this is cloned the path to the dcUtils directory will"
-    echo "need to go into your PATH variable and then exported."
+    echo "need to go into your PATH variable and then exported. This way the scripts"
+    echo "can be run from anywhere on your machine."
+    echo "Note: if you already have cloned dcUtils, provide the path to dcUtils and it"
+    echo "      will updated rather than cloned."
     echo 
     # check to see if we have a default value
     if [[ "${dcUTILS_BASE_DIR}" ]]; then
@@ -409,7 +412,7 @@ if [[ $BV != "4"* ]]; then
         echo "You will need to update your version of bash to the major revison 4.  The"
         echo "devops.center scripts work with the latest bash version 4."
         echo "Please use your normal installation method for installing/upgrading new"
-        echo "software to install/update 'bash'."
+        echo "software to install/update the latest version 'bash'."
         exit 1
     elif [[ ${OSNAME} == "Darwin" ]]; then
         echo "The devops.center scripts all run with Bash version 4+.  It doesn't have"
@@ -420,8 +423,10 @@ if [[ $BV != "4"* ]]; then
         echo "path to the installation of bash is first on your PATH environment variable."
         exit 1
     else
-        echo "Please report the name of the OS that you are running to devops.center. "
-        echo "This is accomplished echo by running the command 'uname -s' on the command line."
+        echo "We need to determine what version of Bash is running on your machine and we"
+        echo "can't determine what type of OS you are running. Please report the name of the"
+        echo "OS that you are running to devops.center representative. This is accomplished"
+        echo "by running the command 'uname -s' on the command line."
         exit 1
     fi
 fi
@@ -432,10 +437,11 @@ fi
 CHECK_AWS=$(which aws)
 if [[ ! ${CHECK_AWS} ]]; then
     echo 
-    echo "The devops.center scripts will use the aws cli commands to access AWS."
+    echo "The devops.center scripts will use the AWS cli commands to access AWS."
     echo "The command 'aws' does not appear to be installed on your machine."
-    echo "Please use your normal installation method for installing new"
-    echo "software to install the command 'aws'."
+    echo "Note that the aws cli is installed via the python installation process"
+    echo "called: pip.  This requires python to be installed with version 2.7+."
+    echo "(python version 2.7+ is what the devops.center scripts use)"
     echo 
     exit 1
 fi
@@ -460,18 +466,18 @@ fi
 #     region
 #     base directory for application development
 #     dcUtils path
-#     ??? I don't think so...directory path to common shared directory ... if there is one
+#     directory path to common shared directory
 #     
 #-------------------------------------------------------------------------------
-
 
 #-------------------------------------------------------------------------------
 # get customer name
 #-------------------------------------------------------------------------------
 echo 
 echo "First, we ask for your customer name.  This will be used"
-echo "as the value for the cloud based profile and should be the same for everyone "
-echo "within the company.  One word and not spaces all lowercase letters."
+echo "as the value for the cloud based profile and should be the same for everyone"
+echo "within the company.  Please enter one word, no spaces, all lowercase letters"
+echo "and can use periods instead of spaces."
 echo 
 
 # check to see if we have a default value
@@ -494,8 +500,8 @@ PROFILE=${CUSTOMER_NAME}
 # get user name  for the cloud environment
 #-------------------------------------------------------------------------------
 echo 
-echo "Enter your username, one word and no spaces all lowercase letters."
-echo "This value will be used to create an cloud user specifically for you."
+echo "Enter your username, one word, no spaces and all lowercase letters."
+echo "This value will be used to create a cloud user specifically for you."
 echo 
 
 # check to see if we have a default value
@@ -516,7 +522,7 @@ USER_NAME=${userName,,}
 # get the base directory name for the  shared drive path
 #-------------------------------------------------------------------------------
 echo
-echo "We need the directory path to wher the shared drive is located on your local"
+echo "We need the directory path to where the shared drive is located on your local"
 echo "machine.  This will be used to look for shared keys and other administrative"
 echo "functions that are shared between all developers working with the devops.center"
 echo "tools."
@@ -535,6 +541,7 @@ if [[ ${sharedDrivePath} == "~"* || ${sharedDrivePath} == "\$HOME"* ]]; then
 else
     dcCOMMON_SHARED_DIR=${sharedDrivePath}
 fi
+
 
 #-------------------------------------------------------------------------------
 # if using AWS get the region for the instances
@@ -558,6 +565,7 @@ if [[ -z ${region} ]]; then
 else
     REGION=${region,,}
 fi
+
 
 #-------------------------------------------------------------------------------
 # get the local development directory
@@ -641,7 +649,6 @@ sendKeysTodc
 #-------------------------------------------------------------------------------
 writeToSettings
 
-
 #-------------------------------------------------------------------------------
 # Now is the time to remove the bootstrap section from the .aws/{config|credentials}
 # this will leave the config and credentials with the PROFILE specifc information and
@@ -655,15 +662,16 @@ cleanUpAWSConfigs
 echo
 echo "** NOTE **"
 echo "You will need to add a line in your shell rc file where the specific rc file is "
-echo "dependent on what shell (ie bash, zsh, csh,...) you run when interacting with the the terminal"
-echo "the line is : "
-echo "               source ~/.dcConfig/settings"
-echo "this will put the minimaal amount of environment variables in your environment "
-echo "and put $dcUTILS into your PATH, both of which are needed to run the devops.center"
-echo "scripts. THen you will need to either log out and log back in, or if you cant't "
-echo "log out, then in each terminal window that you use execute that source command."
-echo "If you don't put it in the appropriate rc file then any new terminal you open will"
-echo "not have the proper environment variables to run the devops.center scripts."
+echo "dependent on what shell (ie bash, zsh, csh,...) you run when interacting with "
+echo "the terminal.  The line is : "
+echo "    source ~/.dcConfig/settings"
+echo "Sourcing this file will put the minimal amount of environment variables in your"
+echo "environment and put $dcUTILS into your PATH, both of which are needed to run the"
+echo "devops.center scripts. Then you will need to either log out and log back in,"
+echo "or if you cant't log out, then in each terminal window that you use, execute "
+echo "that source command. If you don't put it in the appropriate rc file then any new"
+echo "terminal you open will not have the proper environment variables to run the "
+echo "devops.center scripts."
 echo
 
 
