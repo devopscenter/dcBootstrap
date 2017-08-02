@@ -285,8 +285,25 @@ cleanUpAWSConfigs()
     if [[ ${ALREADY_HAS_AWS_CONFIGS} == "yes" ]]; then
         # they had an original config and credentials.  Append the new files to the 
         # original ones
-        cat config >> config.ORIGINAL
-        cat credentials >> credentials.ORIGINAL
+        alreadyHasEntry=$(grep $PROFILE ~/.aws/config.ORIGINAL)
+        if [[ -z ${alreadyHasEntry} ]]; then
+            cat config >> config.ORIGINAL
+            cat credentials >> credentials.ORIGINAL
+        else
+            # they already have a profile by this name so make a second one
+            echo 
+            echo "There was already an entry in the original .aws/config for the "
+            echo "profile (${PROFILE} you are creating.  So, the entry will be marked"
+            echo "as ${PROFILE}-2 and you might need to do some manual work to clean"
+            echo "this up or work with the new name of the profile."
+
+            sed -i "s/${PROFILE}/${PROFILE}-2/" config
+            sed -i "s/${PROFILE}/${PROFILE}-2/" credentials
+
+            # and append them to the original file
+            cat config >> config.ORIGINAL
+            cat credentials >> credentials.ORIGINAL
+        fi
 
         # and move the original back to the only copy left in the .aws directory.
         mv config.ORIGINAL config
