@@ -224,6 +224,7 @@ sendKeysTodc()
 #-------------------------------------------------------------------------------
 writeToSettings()
 {
+    echo "dcCloudService=AWS" > ~/.dcConfig/settings
     echo "dcUTILS=${dcUTILS}" > ~/.dcConfig/settings
     echo "CUSTOMER_NAME=${CUSTOMER_NAME}" >> ~/.dcConfig/settings
     echo "PROFILE=${PROFILE}" >> ~/.dcConfig/settings
@@ -250,6 +251,7 @@ elif [[ "${PATH}" != *"${dcUTILS}"* ]]; then
 fi
 EOF
 
+    echo "unset dcCloudService" >> ~/.dcConfig/settings
     echo "unset CUSTOMER_NAME" >> ~/.dcConfig/settings
     echo "unset PROFILE" >> ~/.dcConfig/settings
     echo "unset USER_NAME" >> ~/.dcConfig/settings
