@@ -225,7 +225,7 @@ sendKeysTodc()
 writeToSettings()
 {
     echo "dcCloudService=AWS" > ~/.dcConfig/settings
-    echo "dcUTILS=${dcUTILS}" > ~/.dcConfig/settings
+    echo "dcUTILS=${dcUTILS}" >> ~/.dcConfig/settings
     echo "CUSTOMER_NAME=${CUSTOMER_NAME}" >> ~/.dcConfig/settings
     echo "PROFILE=${PROFILE}" >> ~/.dcConfig/settings
     echo "USER_NAME=${USER_NAME}" >> ~/.dcConfig/settings
