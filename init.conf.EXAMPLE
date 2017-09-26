@@ -16,16 +16,16 @@ dcCOMMON_SHARED_DIR="~/Google Drive"
 REGION=us-east-1
 
 # This ia basic default directory that is a suggestion that a customer
-# may select that could be a standard directory to put the application
+# may use that could be a standard directory to put the application
 # directory structure in for development.  If it's the same across all
 # of the developers it might make it easier to discuss.  Each developer
 # is free to change it though. That's why it just a suggestion.
 DEV_BASE_DIR="~/devops/apps"
 
-# This ia basic default directory that is a suggestion that a customer
-# may select that could be a standard directory to put the devops.center
-# repo(s) that the developer will make use of when doing devleopment on 
-# the application.  If it's the same across all of the developers it
+# This ia basic default directory that can be the location of the 
+# devops.center tools. It is merely a suggestion that a customer
+# may use, that could be a standard directory to put the devops.center
+# repo(s).  If it's the same across all of the developers it
 # might make it easier to discuss.  Each developer is free to change it
 # though. That's why it just a suggestion.
 dcUTILS_BASE_DIR="~/devops/devopscenter"
