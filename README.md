@@ -1,12 +1,12 @@
 In order to begin the bootstrap process for new developers wanting to use the devops.center
-development framwork, there does need to be some manual work.  One of the tasks is to create 
-a set of key/value pairs that can be used when RUN-ME-FIRST.sh is executed.  
+development framwork, there does need to be some manual work.  
+- One of the tasks is to create a set of key/value pairs that can be used when RUN-ME-FIRST.sh is executed.  
 
-- check the guidelines for you cloud provider on how to make authentication keys
+    - check the guidelines for you cloud provider on how to make authentication keys
 
-- For AWS go to the AWS console and if not already created create an account.
-  Then create the main user and make note of the access key and the secret
-  key. They will be placed into the .aws/credentials file in the steps below 
+    - For AWS go to the AWS console and if not already created create an account.
+      Then create the main user and make note of the access key and the secret
+      key. They will be placed into the .aws/credentials file in the steps below 
 
 - determine the directory on the shared drive (or someplace on your local system if there is only one
 developer) to put the dcBootstrap files
