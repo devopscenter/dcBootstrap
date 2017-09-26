@@ -1,5 +1,11 @@
 In order to begin the bootstrap process for new developers wanting to use the devops.center
-development framwork, there does need to be some manual work.  
+development framwork, there does need to be some manual work.  This is done one time by a single main
+developer.  This manual work will set up the initial logins to the cloud provider as well as keys to
+bootstrap any other developer.  The steps on this page prior to running RUN-ME-FIRST.sh would only be
+done one time and the results will be stored in a bootstrap tarball that can be used by subsequent 
+developers.  Then, all that needs to be done by other developers, is to have access to the directory that
+has the RUN-ME-FIRST.sh script and execute it.
+
 - One of the tasks is to create a set of key/value pairs that can be used when RUN-ME-FIRST.sh is executed.  
 
     - check the guidelines for you cloud provider on how to make authentication keys
