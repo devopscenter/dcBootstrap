@@ -8,10 +8,9 @@ done one time and the results will be stored in a bootstrap tarball that can be 
 developers.  Then, all that needs to be done by other developers, is to have access to the directory that
 has the RUN-ME-FIRST.sh script and execute it. 
 
-    NOTE: The developers other than the first one will have their AWS keys created for them that will be
-     assoicated with an IAM user (for AWS).  These keys will be put alongside any other keys in the
-     .aws/config and .aws/credentials associated with the customer name that is given when RUN-ME-FIRST.sh
-     is executed.
+    NOTE: The developers other than the first one will have their AWS keys created for them.
+     These keys will be put alongside any other keys in the .aws/config and .aws/credentials 
+     associated with the customer name that is given when RUN-ME-FIRST.sh is executed.
 
 - One of the tasks is to create a set of key/value pairs that can be used when RUN-ME-FIRST.sh is executed.  
 
