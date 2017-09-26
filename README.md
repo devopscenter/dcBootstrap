@@ -19,8 +19,8 @@ has the RUN-ME-FIRST.sh script and execute it.
         ```
         NOTE: The developers other than the first one will have their AWS keys created for them
         when they run RUN-ME-FIRST.sh.  These keys will be put alongside any other keys in the 
-        $HOME/.aws/config and $HOME/.aws/credentials associated with the customer name that is given
-        when RUN-ME-FIRST.sh is executed.
+        $HOME/.aws/config and $HOME/.aws/credentials associated with the profile name (customer name) 
+        that is given when RUN-ME-FIRST.sh is executed.
         ```
 
 - determine the directory on the shared drive (or someplace on your local system if there is only one
