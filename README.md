@@ -23,26 +23,26 @@ developer) to put the dcBootstrap files
 - change to the directory that was just created 
 - create a directory named: .aws
 
-```
-mkdir .aws
-```
+    ```
+    mkdir .aws
+    ```
 
 - change directory to .aws
 - create the config file (using your favorite editor) to look like this:
 
-```
-[profile default]
-output = json
-region = us-west-2
-```
+    ```
+    [profile default]
+    output = json
+    region = us-west-2
+    ```
 
 - and then the credentials file should look like this:
 
-```
-[default]
-aws_access_key_id = PUT_YOUR_ACCESS_KEY_HERE
-aws_secret_access_key = PUT_YOUR_SECRET_KEY_HERE
-```
+    ```
+    [default]
+    aws_access_key_id = PUT_YOUR_ACCESS_KEY_HERE
+    aws_secret_access_key = PUT_YOUR_SECRET_KEY_HERE
+    ```
 
 - NOTE: replace the PUT_YOUR_ACCESS_KEY_HERE with the access key you got from creating the set of keys
 
@@ -54,9 +54,9 @@ aws_secret_access_key = PUT_YOUR_SECRET_KEY_HERE
 
 - cd to the directory that has .aws in it
 
-```
-tar -cf bootstrap-aws.tar .aws
-```
+    ```
+    tar -cf bootstrap-aws.tar .aws
+    ```
 
 - before RUN-ME-FIRST.sh is executed it is possible to provide some common (to the customer) defaults to
   the questions that are asked in the RUN-ME-FIRST.sh script.  There is a file, init.conf, in the dcBootstrap
