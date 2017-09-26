@@ -14,11 +14,11 @@ developer) to put the dcBootstrap files
 - download the zipped tarball of the devops.center repository: dcBootstrap
     - execute the following:
 
-```
-cd destination-dir
-curl -L https://github.com/devopscenter/dcBootstrap/archive/master  | tar xf -
-mv devopscenter\* dcBootstrap
-```
+    ```
+    cd destination-dir
+    curl -L https://github.com/devopscenter/dcBootstrap/archive/master  | tar xf -
+    mv devopscenter\* dcBootstrap
+    ```
 
 - change to the directory that was just created 
 - create a directory named: .aws
