@@ -12,7 +12,7 @@
 #                   - check for and install aws cli
 #                   - check for and install jq
 #                   - ask where they want dcUtils
-#                   - create the directory if it doesn't exists
+#                   - create the directory if it doesn't exist
 #                   - cd to that directory 
 #                   - clone dcUtils
 #                   - then 
@@ -389,7 +389,7 @@ clonedcUtils()
 
     if [[ ! -d "${dcUtilsBaseDir}/dcUtils" ]]; then
         if [[ ! -d ${dcUtilsBaseDir} ]]; then
-            echo "That directory ${dcUtilsBaseDir} doesn't exists"
+            echo "That directory ${dcUtilsBaseDir} doesn't exist"
             read -i "y" -p "Do you want it created [y or n]: " -e createdReply
             if [[ ${createdReply} == "y" ]]; then
                 mkdir -p ${dcUtilsBaseDir}
@@ -640,7 +640,7 @@ if [[ ${localDevBaseDir} == "~"* || ${localDevBaseDir} == "\$HOME"* ]]; then
 fi
 
 if [[ ! -d ${localDevBaseDir} ]]; then
-    echo "That directory ${localDevBaseDir} doesn't exists"
+    echo "That directory ${localDevBaseDir} doesn't exist"
     read -i "y" -p "Do you want it created [y or n]: " -e createdReply
     if [[ ${createdReply} == "y" ]]; then
         mkdir -p ${localDevBaseDir}
