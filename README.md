@@ -67,7 +67,7 @@ developer) to put the dcBootstrap files
         can determine that every machine that RUN-ME-FIRST.sh gets run on will have the unzip supported in
         that machines version of tar.
 
-- cd to the directory that has .aws in it
+- cd to the directory that has the .aws direcotry in it (don't be inside .aws, but up one directory)
 
     ```
     tar -cf bootstrap-aws.tar .aws
@@ -82,5 +82,12 @@ developer) to put the dcBootstrap files
 
 - after completion every developer can run RUN-ME-FIRST.sh from that directory and they will have been 
   bootstrapped with the devops.center framework
+
+- change directory to the directory that has the RUN-ME-FIRST.sh script and execute it:
+
+    ```
+    ./RUN-ME-FIRST.sh
+    ```
+    
 
 
