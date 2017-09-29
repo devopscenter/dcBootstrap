@@ -336,7 +336,7 @@ bootstrapAWSConfigs()
 
     if [[ -f "${BASE_DIR}/bootstrap-aws.tar" ]]; then
         cd $HOME
-        tar -xf ${BASE_DIR}/bootstrap-aws.tar
+        tar -xf "${BASE_DIR}/bootstrap-aws.tar"
         cp ~/.aws/config ~/.aws/config.OLD
         cp ~/.aws/credentials ~/.aws/credentials.OLD
     else
@@ -425,8 +425,8 @@ clonedcUtils()
 getBasePath
 
 # get the init.conf to set up some common defaults
-if [[ -f ${BASE_DIR}/init.conf ]]; then
-    source ${BASE_DIR}/init.conf
+if [[ -f "${BASE_DIR}/init.conf" ]]; then
+    source "${BASE_DIR}/init.conf"
 fi
 
 
@@ -435,7 +435,7 @@ fi
 #-------------------------------------------------------------------------------
 
 if [[ ! -d $HOME/.dcConfig ]]; then
-    mkdir $HOME/.dcConfig
+    mkdir "${HOME}"/.dcConfig
 fi
 
 CUR_DIR=$(pwd)
