@@ -1,8 +1,12 @@
-In order to begin the bootstrap process for new developers of a customer, there does
-need to be some manual work.  One of the tasks is to create a set of keys that can be
-used when RUN-ME-FIRST.sh is executed.  
+# devops.center Bootstrap process
 
-- check the guidelines for you cloud provider on how to make authentication keys
+In order to begin the bootstrap process for new developers wanting to use the devops.center
+development framwork, there does need to be some manual work.  This is done one time by a single main
+developer.  This manual work will set up the initial logins to the cloud provider as well as keys to
+bootstrap any other developer.  The steps on this page prior to running RUN-ME-FIRST.sh would only be
+done one time and the results will be stored in a bootstrap tarball that can be used by subsequent 
+developers.  Then, all that needs to be done by other developers, is to have access to the directory that
+has the RUN-ME-FIRST.sh script and execute it. 
 
 - for AWS go to the AWS console and if not already created create an account for the
   customer.  
@@ -57,45 +61,45 @@ AmazonS3FullAccess
 AmazonEC2FullAccess
 ```
 
-- determine the directory on the shared drive to put the dcBootstrap files
+- determine the directory on the shared drive (or someplace on your local system if there is only one
+developer) to put the dcBootstrap files
     - assuming the destination-dir is not there, create it in the shared drive location
 - download the zipped tarball of the devops.center repository: dcBootstrap
-    - execute
+    - execute the following:
 
-```
-cd destination-dir
-curl -L https://github.com/devopscenter/dcBootstrap/archive/master  | tar xf -
-mv devopscenter\* dcBootstrap
-```
+    ```
+    cd destination-dir
+    curl -L https://github.com/devopscenter/dcBootstrap/archive/master  | tar xf -
+    mv devopscenter\* dcBootstrap
+    ```
 
 - change to the directory that was just created 
 - create a directory named: .aws
 
-```
-mkdir .aws
-```
+    ```
+    mkdir .aws
+    ```
 
 - change directory to .aws
 - create the config file like this (NOTE: use the value you will assign to the PROFILE in
   place of the word default):
 
-```
-[profile default]
-output = json
-region = us-west-2
-```
+    ```
+    [profile default]
+    output = json
+    region = us-west-2
+    ```
 
 - and then the credentials file like this (NOTE: use the value you will assign to 
   the PROFILE in place of the word default):
 
-```
-[default]
-aws_access_key_id = PUT_YOUR_ACCESS_KEY_HERE
-aws_secret_access_key = PUT_YOUR_SECRET_KEY_HERE
-```
+    ```
+    [default]
+    aws_access_key_id = PUT_YOUR_ACCESS_KEY_HERE
+    aws_secret_access_key = PUT_YOUR_SECRET_KEY_HERE
+    ```
 
 - NOTE: replace the PUT_YOUR_ACCESS_KEY_HERE with the access key you got from creating the set of keys
-        replace the PUT_YOUR_SECRET_KEY_HERE with the secret key you got from creating the set of keys
 
 - then you will need to tar .aws into a tarball
 - NOTE: use the following name for the tarball as the RUN-ME-FIRST.sh will look specifically for this name
@@ -103,11 +107,11 @@ aws_secret_access_key = PUT_YOUR_SECRET_KEY_HERE
         can determine that every machine that RUN-ME-FIRST.sh gets run on will have the unzip supported in
         that machines version of tar.
 
-- cd to the directory that has .aws in it
+- cd to the directory that has the .aws direcotry in it (don't be inside .aws, but up one directory)
 
-```
-tar -cf bootstrap-aws.tar .aws
-```
+    ```
+    tar -cf bootstrap-aws.tar .aws
+    ```
 
 - before RUN-ME-FIRST.sh is executed it is possible to provide some common (to the customer) defaults to
   the questions that are asked in the RUN-ME-FIRST.sh script.  There is a file, init.conf, in the dcBootstrap
@@ -116,7 +120,14 @@ tar -cf bootstrap-aws.tar .aws
   for development.  However, these values can still be overwritten when RUN-ME-FIRST.sh is run, as they are 
   more like suggestions.
 
-- once there then every developer can run RUN-ME-FIRST.sh from that directory and they will have been 
+- after completion every developer can run RUN-ME-FIRST.sh from that directory and they will have been 
   bootstrapped with the devops.center framework
+
+- change directory to the directory that has the RUN-ME-FIRST.sh script and execute it:
+
+    ```
+    ./RUN-ME-FIRST.sh
+    ```
+    
 
 
