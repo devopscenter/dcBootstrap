@@ -61,7 +61,7 @@ determineProfile()
     aProfile=$(aws configure get region --profile ${PROFILE} 2>&1 > /dev/null)
     if [[ ${aProfile} == *"could not be found"* ]]; then
         anotherProfile=$(aws configure get region --profile default)
-        if [[ ${anotherProfile} == "us-west-2" ]]; then
+        if [[ ${anotherProfile} == "us-west-2" ]] || [[ ${anotherProfile} == "us-east-1" ]]; then
             INITIAL_PROFILE="default"
         fi
     else
@@ -77,18 +77,21 @@ determineProfile()
 #-------------------------------------------------------------------------------
 copyLoggingScript()
 {
-    if [[ -d /usr/local/bin ]]; then
+    if [[ -w /usr/local/bin ]]; then
         cp ${dcUTILS}/scripts/dcEnv.sh /usr/local/bin/dcEnv.sh
     else
         echo 
         echo "We need to put a logging script in /usr/local/bin and it doesn't"
-        echo "appear to exist"
-        read -i "y" -p "Do you want it created [y or n]: " -e createdReply
+        echo "appear to be writable by you"
+        read -i "y" -p "Do you want it use sudo to put it there [y or n]: " -e createdReply
         if [[ ${createdReply} == "y" ]]; then
-            mkdir -p /usr/local/bin
+            sudo cp ${dcUTILS}/scripts/dcEnv.sh /usr/local/bin/dcEnv.sh
         else
-            echo "not created."
-            exit 1
+            echo
+            echo "NOT COPIED. This script just standardizes output from the devops.center"
+            echo "scripts. You can put it somewhere else in your path.  The file is: "
+            echo "${dcUTILS}/scritps/dcEnv.sh"
+            echo
         fi
     fi
 }
@@ -270,8 +273,12 @@ EOF
 cleanUpAWSConfigs()
 {
     cd ~/.aws
-    diff config.OLD config | grep '^>' | sed 's/^>\ //' > config.NEW
-    diff credentials.OLD credentials | grep '^>' | sed 's/^>\ //' > credentials.NEW
+
+    # do a diff and grab the lines that are different in the new one
+    echo "[profile ${PROFILE}]" > config.NEW
+    diff config.OLD config | grep '^>' | sed 's/^>\ //' >> config.NEW
+    echo "[${PROFILE}]" > credentials.NEW
+    diff credentials.OLD credentials | grep '^>' | sed 's/^>\ //' >> credentials.NEW
 
     #-------------------------------------------------------------------------------
     # make the NEW ones the ones to keep
@@ -672,11 +679,6 @@ determineProfile
 setupIAMUser
 
 #-------------------------------------------------------------------------------
-# run aws configure with the appropriate information gathered so far
-#-------------------------------------------------------------------------------
-runAWSConfigure
-
-#-------------------------------------------------------------------------------
 # create the personal private access key to authenticate ssh to an instance 
 # ... put it in the .ssh/devops.center directory or the ~/.dcConfig/ directory
 #-------------------------------------------------------------------------------
@@ -686,6 +688,11 @@ createUserSpecificKeys
 # and make the shared key available to devops.center 
 #-------------------------------------------------------------------------------
 sendKeysTodc
+
+#-------------------------------------------------------------------------------
+# run aws configure with the appropriate information gathered so far
+#-------------------------------------------------------------------------------
+runAWSConfigure
 
 #-------------------------------------------------------------------------------
 # we have collected all the information we need now write it out to .dcConfig/settings
