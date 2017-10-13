@@ -107,6 +107,12 @@ setupIAMUser()
 {
     echo "Setting up this user as an IAM user"
 
+    # The group name that was set up at customer registration time.  There should be a group that would
+    # be named CUSTOMER_NAME-dev and the policy for the group is to have EC2 and S3 full read/write access
+    # but not admin priviledge.  That is left to the authenticated user(s)
+    IAMUserGroup="${CUSTOMER_NAME}-dev"
+        
+
 	IAMUserToCreate=${USER_NAME}
     if [[ $(aws --profile ${INITIAL_PROFILE} --region ${REGION} iam get-user --user-name ${IAMUserToCreate} 2>&1 > /dev/null) == *"cannot be found"* ]]; then
         sleep 2
@@ -119,22 +125,20 @@ setupIAMUser()
         ACCESS_KEY=$(jq -r '.AccessKey.AccessKeyId' <<< "$accessKeys")
         sleep 2
 
-		# The group name that was set up at customer registration time.  There should be a group that would
-        # be named CUSTOMER_NAME-dev and the policy for the group is to have EC2 and S3 full read/write access
-        # but not admin priviledge.  That is left to the authenticated user(s)
-		IAMUserGroup="${CUSTOMER_NAME}-dev"
-        
-        # add the login to a group so that the policy can be attached to the group rather
-        # than the user
+        # add the login to a group so that the policy can be attached to the group rather  than the user
         addToGroup=$(aws --profile ${INITIAL_PROFILE} --region ${REGION} iam add-user-to-group --user-name ${IAMUserToCreate} --group-name ${IAMUserGroup} 2>&1 > /dev/null)
-        # and add the public key transfer group also
         sleep 2
     else
+        # add the login to a group so that the policy can be attached to the group rather than the user
+        addToGroup=$(aws --profile ${INITIAL_PROFILE} --region ${REGION} iam add-user-to-group --user-name ${IAMUserToCreate} --group-name ${IAMUserGroup} 2>&1 > /dev/null)
+        sleep 2
+
         # create the keys for the user
         accessKeys=$(aws --profile ${INITIAL_PROFILE} --region ${REGION} iam create-access-key --user-name  ${IAMUserToCreate})
         SECRET_ACCESS_KEY=$(jq -r '.AccessKey.SecretAccessKey' <<< "$accessKeys")
         ACCESS_KEY=$(jq -r '.AccessKey.AccessKeyId' <<< "$accessKeys")
         sleep 2
+
     fi
 }
 
