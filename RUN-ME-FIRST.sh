@@ -551,7 +551,7 @@ PROFILE=${CUSTOMER_NAME}
 #-------------------------------------------------------------------------------
 echo 
 echo "Enter your username, one word, no spaces and all lowercase letters."
-echo "This value will be used to create a cloud user specifically for you."
+echo "This value will be used to create a AWS IAM user specifically for you."
 echo 
 
 # check to see if we have a default value
