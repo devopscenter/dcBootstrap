@@ -94,21 +94,26 @@ determineProfile()
 #-------------------------------------------------------------------------------
 copyLoggingScript()
 {
-    if [[ -w /usr/local/bin ]]; then
-        cp ${dcUTILS}/scripts/dcEnv.sh /usr/local/bin/dcEnv.sh
+    if [[ ${AUTO_MODE} == "true" ]]; then
+        sudo cp ${dcUTILS}/scripts/dcEnv.sh /usr/local/bin/dcEnv.sh
     else
-        echo 
-        echo "We need to put a logging script in /usr/local/bin and it doesn't"
-        echo "appear to be writable by you"
-        read -i "y" -p "Do you want it use sudo to put it there [y or n]: " -e createdReply
-        if [[ ${createdReply} == "y" ]]; then
-            sudo cp ${dcUTILS}/scripts/dcEnv.sh /usr/local/bin/dcEnv.sh
+
+        if [[ -w /usr/local/bin ]]; then
+            cp ${dcUTILS}/scripts/dcEnv.sh /usr/local/bin/dcEnv.sh
         else
-            echo
-            echo "NOT COPIED. This script just standardizes output from the devops.center"
-            echo "scripts. You can put it somewhere else in your path.  The file is: "
-            echo "${dcUTILS}/scritps/dcEnv.sh"
-            echo
+            echo 
+            echo "We need to put a logging script in /usr/local/bin and it doesn't"
+            echo "appear to be writable by you"
+            read -i "y" -p "Do you want it use sudo to put it there [y or n]: " -e createdReply
+            if [[ ${createdReply} == "y" ]]; then
+                sudo cp ${dcUTILS}/scripts/dcEnv.sh /usr/local/bin/dcEnv.sh
+            else
+                echo
+                echo "NOT COPIED. This script just standardizes output from the devops.center"
+                echo "scripts. You can put it somewhere else in your path.  The file is: "
+                echo "${dcUTILS}/scritps/dcEnv.sh"
+                echo
+            fi
         fi
     fi
 }
@@ -256,6 +261,7 @@ writeToSettings()
     echo "REGION=${REGION}" >> ~/.dcConfig/settings
     echo "DEV_BASE_DIR=${DEV_BASE_DIR}" >> ~/.dcConfig/settings
     echo "dcCOMMON_SHARED_DIR=\"${dcCOMMON_SHARED_DIR}\"" >> ~/.dcConfig/settings
+    echo "AUTHENTICATION_SERVER_IP=0.0.0.0"
     echo  >> ~/.dcConfig/settings
     echo "export dcUTILS=${dcUTILS}" >> ~/.dcConfig/settings
 
@@ -446,8 +452,123 @@ clonedcUtils()
 }
 
 
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  runAutomatically
+#   DESCRIPTION:  run with accepting all entries in the init.conf without asking
+#                 any questions
+#    PARAMETERS:  
+#       RETURNS:  
+#-------------------------------------------------------------------------------
+runAutomatically ()
+{
+    set -x
+    # the customer name
+    CUSTOMER_NAME=${CUSTOMER_NAME,,}
+    PROFILE=${CUSTOMER_NAME}
+
+    # the user name
+    USER_NAME=${USER_NAME,,}
+
+    # the common shared directory
+    if [[ ${dcCOMMON_SHARED_DIR} == "~"* || ${dcCOMMON_SHARED_DIR} == "\$HOME"* ]]; then
+        homePath=$(echo $HOME)
+        partialCommonDir=${dcCOMMON_SHARED_DIR#*/}
+        dcCOMMON_SHARED_DIR="${homePath}/${partialCommonDir}"
+    else
+        dcCOMMON_SHARED_DIR=${sharedDrivePath}
+    fi
+
+    # the default region to use
+    REGION=${REGION,,}
+
+    # the development directory to put the apps
+    if [[ ${DEV_BASE_DIR} == "~"* || ${DEV_BASE_DIR} == "\$HOME"* ]]; then
+        homePath=$(echo $HOME)
+        partialBaseDir=${DEV_BASE_DIR#*/}
+        localDevBaseDir="${homePath}/${partialBaseDir}"
+        DEV_BASE_DIR=${localDevBaseDir}
+    fi
+
+    if [[ ! -d ${DEV_BASE_DIR} ]]; then
+        mkdir -p ${DEV_BASE_DIR}
+    fi
+
+    # the directory to put the devops.center scripts into
+    if [[ ${dcUTILS_BASE_DIR} == "~"* || ${dcUTILS_BASE_DIR} == "\$HOME"* ]]; then
+        homePath=$(echo $HOME)
+        partialBaseDir=${aBaseDir#*/}
+        dcUtilsBaseDir="${homePath}/${partialBaseDir}"
+    else
+        dcUtilsBaseDir=${dcUTILS_BASE_DIR}
+    fi
+
+    dcUTILS="${dcUtilsBaseDir}/dcUtils"
+
+    #-------------------------------------------------------------------------------
+    # now we need to get the bootstrap aws config and credentials to be able to set
+    # up the IAM user
+    #-------------------------------------------------------------------------------
+    bootstrapAWSConfigs
+
+    #-------------------------------------------------------------------------------
+    # need to help them run through setting up the IAM user for this user and use 
+    # the AccessKey and SecretKey that is created specifically for this user to be 
+    # used in the aws configure setup. 
+    #-------------------------------------------------------------------------------
+    determineProfile
+    setupIAMUser
+
+    #-------------------------------------------------------------------------------
+    # create the personal private access key to authenticate ssh to an instance 
+    # ... put it in the .ssh/devops.center directory or the ~/.dcConfig/ directory
+    #-------------------------------------------------------------------------------
+    createUserSpecificKeys
+
+    #-------------------------------------------------------------------------------
+    # and make the shared key available to devops.center 
+    #-------------------------------------------------------------------------------
+    sendKeysTodc
+
+    #-------------------------------------------------------------------------------
+    # run aws configure with the appropriate information gathered so far
+    #-------------------------------------------------------------------------------
+    runAWSConfigure
+
+    #-------------------------------------------------------------------------------
+    # we have collected all the information we need now write it out to .dcConfig/settings
+    #-------------------------------------------------------------------------------
+    writeToSettings
+
+    #-------------------------------------------------------------------------------
+    # we need to copy over the dcEnv.sh over to /usr/local/bin so the scripts that
+    # don't use process_dc_env.py can still get the logging functions that display a 
+    # better output. 
+    #-------------------------------------------------------------------------------
+    copyLoggingScript
+
+    #-------------------------------------------------------------------------------
+    # Now is the time to remove the bootstrap section from the .aws/{config|credentials}
+    # this will leave the config and credentials with the PROFILE specifc information and
+    # their specific credentials in the ~/.aws/ config files.
+    #-------------------------------------------------------------------------------
+    cleanUpAWSConfigs
+
+    # and update the bashrc
+    echo "source ~/.dcConfig/settings" >> ~/.bashrc
+
+    # and update our current running session
+    source ~/.dcConfig/settings
+
+}	# ----------  end of function runAutomatically  ----------
+
 #-----  End of Function definition  -------------------------------------------
 
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --autoMode )    shift
+                        AUTO_MODE="true"
+    esac
+done
 
 # get BASE_DIR from getMyPath
 getBasePath
@@ -528,6 +649,11 @@ if [[ ! ${CHECK_JQ} ]]; then
     echo "software to install the command 'jq'."
     echo 
     exit 1
+fi
+
+if [[ ${AUTO_MODE} == "true" ]]; then
+    runAutomatically
+    exit
 fi
 
 #-------------------------------------------------------------------------------
