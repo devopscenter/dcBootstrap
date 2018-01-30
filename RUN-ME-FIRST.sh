@@ -205,10 +205,18 @@ runAWSConfigure()
 #-------------------------------------------------------------------------------
 createUserSpecificKeys()
 {
+    if [[ ! -d ~/.ssh/devops.center ]]; then
+        mkdir -p ~/.ssh/devops.center
+    fi
+
     # call the ssh-keygen to create a private/public set of keys
     echo "Creating ssh access keys (dcaccess-key) to be used to access the AWS instances"
-    ssh-keygen -t rsa -N "" -f ~/.ssh/dcaccess-key -q
-    mv ~/.ssh/dcaccess-key ~/.ssh/dcaccess-key.pem
+    ssh-keygen -t rsa -N "" -f ~/.ssh/devops.center/dcaccess-key -q
+    mv ~/.ssh/devops.center/dcaccess-key ~/.ssh/devops.center/dcaccess-key.pem
+
+    # and create a separate key for the dcAuthorization server
+    ssh-keygen -t rsa -N "" -f ~/.ssh/devops.center/dcauthor-${USER_NAME}-key -q
+    mv ~/.ssh/devops.center/dcauthor-${USER_NAME}-key ~/.ssh/devops.center/dcauthor-${USER_NAME}-key.pem
 }
 
 
@@ -236,7 +244,7 @@ sendKeysTodc()
     sleep 2
 
     # upload the public key
-    UPLOAD=$(aws --profile ${INITIAL_PROFILE} --region ${REGION} iam upload-ssh-public-key --user-name ${USER_NAME} --ssh-public-key-body "$(cat ~/.ssh/dcaccess-key.pub) 2>&1 > /dev/null")
+    UPLOAD=$(aws --profile ${INITIAL_PROFILE} --region ${REGION} iam upload-ssh-public-key --user-name ${USER_NAME} --ssh-public-key-body "$(cat ~/.ssh/devops.center/dcaccess-key.pub) 2>&1 > /dev/null")
     sleep 2
 
     # remove the group public-key-tranfer from the IAM user
@@ -521,6 +529,7 @@ runAutomatically ()
     #-------------------------------------------------------------------------------
     # create the personal private access key to authenticate ssh to an instance 
     # ... put it in the .ssh/devops.center directory or the ~/.dcConfig/ directory
+    # also make the the key to access the authorization server
     #-------------------------------------------------------------------------------
     createUserSpecificKeys
 
