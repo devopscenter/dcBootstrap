@@ -256,7 +256,6 @@ writeToSettings()
     echo "REGION=${REGION}" >> ~/.dcConfig/settings
     echo "DEV_BASE_DIR=${DEV_BASE_DIR}" >> ~/.dcConfig/settings
     echo "dcCOMMON_SHARED_DIR=\"${dcCOMMON_SHARED_DIR}\"" >> ~/.dcConfig/settings
-    echo "AUTHENTICATION_SERVER_IP=0.0.0.0"
     echo  >> ~/.dcConfig/settings
     echo "export dcUTILS=${dcUTILS}" >> ~/.dcConfig/settings
 
