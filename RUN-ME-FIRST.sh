@@ -281,7 +281,43 @@ EOF
     echo "unset USER_NAME" >> ~/.dcConfig/settings
     echo "unset REGION" >> ~/.dcConfig/settings
     echo "unset DEV_BASE_DIR" >> ~/.dcConfig/settings
-    
+
+    # and now write out the git service and account name to the
+    # shared setting file
+    if [[ ! -d ${dcCOMMON_SHARED_DIR} ]]; then
+        echo 
+        echo "NOTE: the common shared directory: ${dcCOMMON_SHARED_DIR}"
+        echo "doesn't exist, so the shared settings can not be created."
+        echo "Please contact a devops.center engineer to correct, they"
+        echo "may have to create it by hand."
+        echo 
+        return
+    fi
+
+    # ok at least the shared directory is there so lets see if the directory
+    # we need to write the shared settings exists and if not create it
+    SHARED_CONFIG_DIR=${dcCOMMON_SHARED_DIR}/${CUSTOMER_NAME}/shared/.dcConfig
+    if [[ ! -d ${SHARED_CONFIG_DIR} ]]; then
+        mkdir -p ${SHARED_CONFIG_DIR}
+
+        if [[ ! -d ${SHARED_CONFIG_DIR} ]]; then
+            echo 
+            echo "NOTE: tried to create the directory that will house the shared "
+            echo "settings on the shared drive and could not.  Trying to create directory "
+            echo "${SHARED_CONFIG_DIR}/shared/.dcConfig"
+            echo "Please contact a devops.center engineer to correct, they"
+            echo "may need to assist with this."
+            echo 
+            return
+        fi
+    fi
+
+    # if we get here the shared drive is connected and the shared directory is there
+    # now for the settings file
+    if [[ ! -f  ${SHARED_CONFIG_DIR}/settings ]]; then
+        echo "GIT_SERVICE_NAME=${GIT_SERVICE_NAME}" >> ${SHARED_CONFIG_DIR}/settings
+        echo "GIT_ACCOUNT_NAME=${GIT_ACCOUNT_NAME}" >> ${SHARED_CONFIG_DIR}/settings
+    fi
 }
 
 
@@ -635,6 +671,31 @@ if [[ -z ${region} ]]; then
     REGION=us-west-2
 else
     REGION=${region,,}
+fi
+
+
+#-------------------------------------------------------------------------------
+# get which git service the customer is using and their repository account name
+#-------------------------------------------------------------------------------
+echo  
+echo "Provide the git service name (ie, github, assembla, etc) that holds your repositories"
+echo "for you company. Defaults to github"
+echo 
+# check to see if we have a default value
+if [[ "${GIT_SERVICE_NAME}" ]]; then
+    read -i "${GIT_SERVICE_NAME}" -p "Enter the git service name and press [ENTER]: "  -e gitService
+else
+    read -i "github" -p "Enter the git service name and press [ENTER]: "  -e gitService
+fi
+
+echo 
+echo "And now enter the account name on that service"
+echo 
+# check to see if we have a default value
+if [[ "${GIT_ACCOUNT_NAME}" ]]; then
+    read -i "${GIT_ACCOUNT_NAME}" -p "Enter your git account name and press [ENTER]: "  -e gitAccount
+else
+    read -i "${CUSTOMER_NAME}" -p "Enter your git account name and press [ENTER]: "  -e gitAccount
 fi
 
 
