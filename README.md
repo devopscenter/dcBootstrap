@@ -69,7 +69,7 @@ developer) to put the dcBootstrap files
 
     ```
     cd destination-dir
-    curl -L https://github.com/devopscenter/dcBootstrap/archive/master  | tar xf -
+    curl -L https://github.com/devopscenter/dcBootstrap/archive/master.tar.gz  | tar xzf -
     mv devopscenter\* dcBootstrap
     ```
 
