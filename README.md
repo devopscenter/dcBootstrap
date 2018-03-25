@@ -70,7 +70,7 @@ developer) to put the dcBootstrap files
     ```
     cd destination-dir
     curl -L https://github.com/devopscenter/dcBootstrap/archive/master.tar.gz  | tar xzf -
-    mv devopscenter\* dcBootstrap
+    mv dcBoostrap-master/* .
     ```
 
 - change to the directory that was just created 
