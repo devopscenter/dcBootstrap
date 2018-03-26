@@ -340,8 +340,12 @@ cleanUpAWSConfigs()
     cd ~/.aws
 
     # do a diff and grab the lines that are different in the new one
-    echo "[profile ${PROFILE}]" > config.NEW
-    diff config.OLD config | grep '^>' | sed 's/^>\ //' >> config.NEW
+    if [[ $(diff config.OLD config) ]]; then 
+        echo "[profile ${PROFILE}]" > config.NEW
+        diff config.OLD config | grep '^>' | sed 's/^>\ //' >> config.NEW
+    else
+        cp config config.NEW
+    fi
     echo "[${PROFILE}]" > credentials.NEW
     diff credentials.OLD credentials | grep '^>' | sed 's/^>\ //' >> credentials.NEW
 
