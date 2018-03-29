@@ -304,7 +304,7 @@ EOF
 
     # ok at least the shared directory is there so lets see if the directory
     # we need to write the shared settings exists and if not create it
-    SHARED_CONFIG_DIR=${dcCOMMON_SHARED_DIR}/${CUSTOMER_NAME}/shared/.dcConfig
+    SHARED_CONFIG_DIR=${dcCOMMON_SHARED_DIR}/dcConfig
     if [[ ! -d ${SHARED_CONFIG_DIR} ]]; then
         mkdir -p ${SHARED_CONFIG_DIR}
 
@@ -312,7 +312,7 @@ EOF
             echo 
             echo "NOTE: tried to create the directory that will house the shared "
             echo "settings on the shared drive and could not.  Trying to create directory "
-            echo "${SHARED_CONFIG_DIR}/shared/.dcConfig"
+            echo "${SHARED_CONFIG_DIR}/dcConfig"
             echo "Please contact a devops.center engineer to correct, they"
             echo "may need to assist with this."
             echo 
@@ -650,7 +650,7 @@ echo
 if [[ "${dcCOMMON_SHARED_DIR}" ]]; then
     read -i "${dcCOMMON_SHARED_DIR}" -p "Enter the shared drive path and press [ENTER]: " -e sharedDrivePath
 else
-    read -i "~/Google Drive" -p "Enter the shared drive path and press [ENTER]: " -e sharedDrivePath
+    read -i "~/Google Drive/devops.center" -p "Enter the shared drive path and press [ENTER]: " -e sharedDrivePath
 fi
 
 if [[ ${sharedDrivePath} == "~"* || ${sharedDrivePath} == "\$HOME"* ]]; then
