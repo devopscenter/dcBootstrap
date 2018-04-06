@@ -11,7 +11,7 @@ has the RUN-ME-FIRST.sh script and execute it.
 - for AWS go to the AWS console and if not already created create an account for the
   customer.  
   
-  Then create the main user and make note of the access key and the secret
+  Then create the main user (admin-dev with administrator priviledges) and make note of the access key and the secret
   key. They will be placed into the .aws/credentials file in the steps below 
 
   There is an important step to note, and that is determining the name that
