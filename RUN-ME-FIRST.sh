@@ -304,7 +304,7 @@ EOF
 
     # ok at least the shared directory is there so lets see if the directory
     # we need to write the shared settings exists and if not create it
-    SHARED_CONFIG_DIR=${dcCOMMON_SHARED_DIR}/devops.center/dcConfig
+    SHARED_CONFIG_DIR=${dcCOMMON_SHARED_DIR}/dcConfig
     if [[ ! -d ${SHARED_CONFIG_DIR} ]]; then
         mkdir -p ${SHARED_CONFIG_DIR}
 
