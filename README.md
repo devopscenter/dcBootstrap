@@ -68,9 +68,9 @@ developer) to put the dcBootstrap files
     - execute the following:
 
     ```
-    cd destination-dir
+    cd baseSharedDirectory/customername/devops.center
     curl -L https://github.com/devopscenter/dcBootstrap/archive/master.tar.gz  | tar xzf -
-    mv dcBoostrap-master/* .
+    mv dcBoostrap-master dcBootstrap
     ```
 
 - change to the directory that was just created 
