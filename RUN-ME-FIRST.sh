@@ -95,7 +95,7 @@ determineProfile()
 copyLoggingScript()
 {
     if [[ -w /usr/local/bin ]]; then
-        cp ${dcUTILS}/scripts/dcEnv.sh /usr/local/bin/dcEnv.sh
+        cp ${dcUTILS}/scripts/dcEnv.sh /usr/local/bin/dcEnv.sh  > /dev/null 2>&1
     else
         echo 
         echo "We need to put a logging script in /usr/local/bin and it doesn't"
@@ -263,7 +263,7 @@ writeToSettings()
     echo "USER_NAME=${USER_NAME}" >> ~/.dcConfig/settings
     echo "REGION=${REGION}" >> ~/.dcConfig/settings
     echo "DEV_BASE_DIR=${DEV_BASE_DIR}" >> ~/.dcConfig/settings
-    echo "dcCOMMON_SHARED_DIR=\"${dcCOMMON_SHARED_DIR}\"" >> ~/.dcConfig/settings
+    echo "dcCOMMON_SHARED_DIR=${dcCOMMON_SHARED_DIR}" >> ~/.dcConfig/settings
     echo  >> ~/.dcConfig/settings
     echo "export dcUTILS=${dcUTILS}" >> ~/.dcConfig/settings
 
@@ -817,12 +817,12 @@ echo "dependent on what shell (ie bash, zsh, csh,...) you run when interacting w
 echo "the terminal.  The line is : "
 echo "    source ~/.dcConfig/settings"
 echo "Sourcing this file will put the minimal amount of environment variables in your"
-echo "environment and put $dcUTILS into your PATH, both of which are needed to run the"
-echo "devops.center scripts. Then you will need to either log out and log back in,"
-echo "or if you cant't log out, then in each terminal window that you use, execute "
-echo "that source command. If you don't put it in the appropriate rc file then any new"
-echo "terminal you open will not have the proper environment variables to run the "
-echo "devops.center scripts."
+echo "environment and put $dcUTILS into your PATH,"
+echo "both of which are needed to run the devops.center scripts. Then you will need"
+echo "to either log out and log back in, or if you cant't log out, then in each "
+echo "terminal window that you use, execute that source command. If you don't put"
+echo "it in the appropriate rc file then any new terminal you open will not have"
+echo "the proper environment variables to run the devops.center scripts."
 echo
 
 
