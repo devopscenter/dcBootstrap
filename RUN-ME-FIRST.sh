@@ -250,7 +250,7 @@ sendKeysTodc()
 #---  FUNCTION  ----------------------------------------------------------------
 #          NAME:  writeToSettings
 #   DESCRIPTION:  this function will write the necessary key/value pairs out to
-#                 ~/dcConfig/settings
+#                 ~/dcConfig/settings and ~/.dcConfig/devops.center-rc
 #    PARAMETERS:  
 #       RETURNS:  
 #-------------------------------------------------------------------------------
@@ -267,7 +267,7 @@ writeToSettings()
     echo  >> ~/.dcConfig/settings
     echo "export dcUTILS=${dcUTILS}" >> ~/.dcConfig/settings
 
-    cat << 'EOF' >> ~/.dcConfig/settings 
+    cat << 'EOF' >> ~/.dcConfig/devops.center-rc
 if [[ -z ${PYTHONPATH} ]]; then
     export PYTHONPATH=${dcUTILS}/scripts
 elif [[ "${PYTHONPATH}" != *"${dcUTILS}"* ]]; then
@@ -815,7 +815,7 @@ echo "** NOTE **"
 echo "You will need to add a line in your shell rc file where the specific rc file is "
 echo "dependent on what shell (ie bash, zsh, csh,...) you run when interacting with "
 echo "the terminal.  The line is : "
-echo "    source ~/.dcConfig/settings"
+echo "    source ~/.dcConfig/devops.center-rc"
 echo "Sourcing this file will put the minimal amount of environment variables in your"
 echo "environment and put $dcUTILS into your PATH,"
 echo "both of which are needed to run the devops.center scripts. Then you will need"
