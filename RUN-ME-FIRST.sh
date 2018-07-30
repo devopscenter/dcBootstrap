@@ -129,7 +129,7 @@ writeToSettings()
     echo "CUSTOMER_NAME=${CUSTOMER_NAME}" >> ~/.dcConfig/settings
     echo "PROFILE=${PROFILE}" >> ~/.dcConfig/settings
     echo "USER_NAME=${USER_NAME}" >> ~/.dcConfig/settings
-    echo "REGION=${REGION}" >> ~/.dcConfig/settings
+    echo "REGION=NA" >> ~/.dcConfig/settings
     echo "DEV_BASE_DIR=${DEV_BASE_DIR}" >> ~/.dcConfig/settings
     echo "dcCOMMON_SHARED_DIR=\"${dcCOMMON_SHARED_DIR}\"" >> ~/.dcConfig/settings
     echo  >> ~/.dcConfig/settings
