@@ -11,9 +11,15 @@ USER_NAME=
 # it then they will have to change it when asked
 dcCOMMON_SHARED_DIR="~/Google Drive"
 
-# this is default region that the customer will put their application
-# in and will be the initial region when running the aws configure
-REGION=us-east-1
+# this is the default git service name that the customer uses.  This 
+# is saved in the shared settings file.  This is something like github
+# assembla or another such service that house git repositories
+GIT_SERVICE_NAME="github"
+
+# this is the place holder for the customers account name on the 
+# GIT_SERVICE it is left blank and will get filled in by the CUSTOMER_NAME
+# after they enter it.  Otherwise it can go here.
+GIT_ACCOUNT_NAME=
 
 # This ia basic default directory that is a suggestion that a customer
 # may use that could be a standard directory to put the application
