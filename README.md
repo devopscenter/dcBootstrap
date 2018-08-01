@@ -5,9 +5,21 @@ development framwork, there does need to be some manual work.  This is done one 
 developer.  This manual work will set up the initial logins to the cloud provider as well as keys to
 bootstrap any other developer.  The steps on this page prior to running RUN-ME-FIRST.sh would only be
 done one time and the results will be stored in a bootstrap tarball that can be used by subsequent 
-developers.  Then, all that needs to be done by other developers, is to have access to the directory that
-has the RUN-ME-FIRST.sh script and execute it.  Note, they the developers would only run this one time to
-set up their own personalized environment.
+developers.  
+
+There is one required step to get a developer set up using the devops.center framework, and that is to
+the RUN-ME-FIRST.sh script.  This will be placed in the shared diretory (ie, Google Drive/devops.center/dcBootstrap)
+and when run will set up the developers environment with the basic set of configs.  It will also 
+pull down the dcUtils repository that will provide the tools that will make it easier to work with the 
+framework.
+
+If the developer needs to have access to AWS then there is a second script that will need to be run that will
+set up the AWS configuration for that user.  The script to run is createAWS-setup.sh and it is in dcUtils.
+
+Note, they the developers would only run these scripts one time to set up their own personalized environment.
+
+What follows are the steps that need to be done by the devops.center engineer with an admin that has been
+designated fro the company.
 
 - for AWS go to the AWS console and if not already created create an account for the
   customer.  
