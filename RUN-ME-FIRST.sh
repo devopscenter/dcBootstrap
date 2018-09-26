@@ -169,31 +169,6 @@ EOF
         echo 
         return
     fi
-
-    # ok at least the shared directory is there so lets see if the directory
-    # we need to write the shared settings exists and if not create it
-    SHARED_CONFIG_DIR=${dcCOMMON_SHARED_DIR}/devops.center/dcConfig
-    if [[ ! -d ${SHARED_CONFIG_DIR} ]]; then
-        mkdir -p ${SHARED_CONFIG_DIR}
-
-        if [[ ! -d ${SHARED_CONFIG_DIR} ]]; then
-            echo 
-            echo "NOTE: tried to create the directory that will house the shared "
-            echo "settings on the shared drive and could not.  Trying to create directory "
-            echo "${SHARED_CONFIG_DIR}/dcConfig"
-            echo "Please contact a devops.center engineer to correct, they"
-            echo "may need to assist with this."
-            echo 
-            return
-        fi
-    fi
-
-    # if we get here the shared drive is connected and the shared directory is there
-    # now for the settings file
-    if [[ ! -f  ${SHARED_CONFIG_DIR}/settings ]]; then
-        echo "GIT_SERVICE_NAME=${GIT_SERVICE_NAME}" >> ${SHARED_CONFIG_DIR}/settings
-        echo "GIT_ACCOUNT_NAME=${GIT_ACCOUNT_NAME}" >> ${SHARED_CONFIG_DIR}/settings
-    fi
 }
 
 
